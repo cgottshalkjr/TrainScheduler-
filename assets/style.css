@@ -1,0 +1,14 @@
+.jumbotron {
+    background-image: url("../assets/images/ train.jpg");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+
+@media screen and (max-width: 640px) {
+    .jumbotron {
+        background-size: cover;
+        background-image: none;
+    }
+    
+  }
