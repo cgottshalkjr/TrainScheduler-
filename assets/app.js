@@ -14,11 +14,38 @@ firebase.initializeApp(firebaseConfig);
 
 var database = firebase.database();
 
-$("#submit").on("click", function(){
+$("#submit").on("click", function () {
 
     var trainInput = $("#trainNameInput").val().trim();
     var destInput = $("#destinationInput").val().trim();
     var timeInput = $("#trainTimeInput").val().trim();
     var freqInput = $("#frequencyInput").val().trim();
 
+
+    console.log(trainInput);
+    console.log(destInput);
+    console.log(timeInput);
+    console.log(freqInput);
+
+    database.ref().push({
+
+        trainInput: trainInput,
+        destInput: destInput,
+        timeInput: timeInput,
+        freqInput: freqInput,
+    });
+
+    database.ref.on("child_added", function(snap){
+
+        console.log(snap.val());
+        console.log(snap.val().trainInput);
+        console.log(snap.val().destInput);
+        console.log(snap.val().timeInput);
+        console.log(snap.val().freqInput);
+
+
+    });
+
 });
+
+
