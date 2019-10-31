@@ -35,10 +35,10 @@ $("#submit").on("click", function () {
         freqInput: freqInput,
     });
 
-    
+
 });
 
-database.ref().on("child_added", function(snap){
+database.ref().on("child_added", function (snap) {
 
     var sval = snap.val();
 
@@ -49,17 +49,15 @@ database.ref().on("child_added", function(snap){
     console.log(snap.val().freqInput);
     console.log("--------------");
 
-    var newTableRow = $("<tr>");
-    var newTD1 = $("<td>").text(sval.trainInput);
-    var newTD2 = $("<td>").text(sval.destInput);
-    var newTD3 = $("<td>").text(sval.timeInput);
-    var newTD4 = $("<td>").text(sval.freqInput);
+    var newTableRow = $("<tr>").append(
+        $("<td>").text(sval.trainInput),
+        $("<td>").text(sval.destInput),
+        $("<td>").text(sval.timeInput),
+        $("<td>").text(sval.freqInput),
+    );
 
-    newTableRow.append(newTD1);
-    newTableRow.append(newTD2);
-    newTableRow.append(newTD3);
-    newTableRow.append(newTD4);
-    $("#newTBODY").append(newTableRow);
+
+    $("tbody").append(newTableRow);
 
 
 
