@@ -35,17 +35,35 @@ $("#submit").on("click", function () {
         freqInput: freqInput,
     });
 
-    database.ref.on("child_added", function(snap){
+    
+});
 
-        console.log(snap.val());
-        console.log(snap.val().trainInput);
-        console.log(snap.val().destInput);
-        console.log(snap.val().timeInput);
-        console.log(snap.val().freqInput);
+database.ref().on("child_added", function(snap){
+
+    var sval = snap.val();
+
+    console.log(snap.val());
+    console.log(snap.val().trainInput);
+    console.log(snap.val().destInput);
+    console.log(snap.val().timeInput);
+    console.log(snap.val().freqInput);
+    console.log("--------------");
+
+    var newTableRow = $("<tr>");
+    var newTD1 = $("<td>").text(sval.trainInput);
+    var newTD2 = $("<td>").text(sval.destInput);
+    var newTD3 = $("<td>").text(sval.timeInput);
+    var newTD4 = $("<td>").text(sval.freqInput);
+
+    newTableRow.append(newTD1);
+    newTableRow.append(newTD2);
+    newTableRow.append(newTD3);
+    newTableRow.append(newTD4);
+    $("#newTBODY").append(newTableRow);
 
 
-    });
 
 });
+
 
 

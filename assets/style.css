@@ -10,5 +10,10 @@
         background-size: cover;
         background-image: none;
     }
+
+    .mobile-light {
+        color: white !important;
+        /* font-weight: none !important; */
+    }
     
   }
