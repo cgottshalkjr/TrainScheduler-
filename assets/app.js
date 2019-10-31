@@ -52,12 +52,34 @@ database.ref().on("child_added", function (snap) {
     var newTableRow = $("<tr>").append(
         $("<td>").text(sval.trainInput),
         $("<td>").text(sval.destInput),
-        $("<td>").text(sval.timeInput),
-        $("<td>").text(sval.freqInput),
     );
 
-
     $("tbody").append(newTableRow);
+
+    var trainFreq = 5;
+    var firstTrainTime = "3:30";
+
+    var firstTimeConverted = moment(firstTrainTime, "HH:mm");
+    console.log(firstTimeConverted);
+
+    var currentTime = moment();
+    console.log("Current Time: " + moment(currentTime).format("HH:mm"));
+
+    var timeDiff = moment().diff(moment(firstTimeConverted), "minutes");
+    console.log("DIFFERENCE IN TIME: " + timeDiff);
+
+    var timeRemain = timeDiff % trainFreq;
+    console.log(timeRemain);
+
+    var tMinutesTillTrain = trainFreq - timeRemain;
+    console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+
+    var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+    console.log("ARRIVAL TIME: " + moment(nextTrain).format("HH:mm"));
+
+    // if (timeInput !== format("HH:mm")){
+    //     alert("Current field needs to be entered in Military Time!")
+    // }
 
 
 
