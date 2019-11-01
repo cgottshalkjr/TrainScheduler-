@@ -52,18 +52,19 @@ database.ref().on("child_added", function (snap) {
     var newTableRow = $("<tr>").append(
         $("<td>").text(sval.trainInput),
         $("<td>").text(sval.destInput),
+        $("<td>").text(sval.freqInput),
     );
 
     $("tbody").append(newTableRow);
 
-    var trainFreq = 5;
-    var firstTrainTime = "3:30";
+    var trainFreq = sval.freqInput;
 
-    var firstTimeConverted = moment(firstTrainTime, "HH:mm");
+    var firstTrainTime = sval.timeInput;
+    
+    var firstTimeConverted = moment(firstTrainTime, "HH:mm").subtract(1, "years");
     console.log(firstTimeConverted);
-
-    var currentTime = moment();
-    console.log("Current Time: " + moment(currentTime).format("HH:mm"));
+    
+    var currentTime = moment().format("HH:mm");
 
     var timeDiff = moment().diff(moment(firstTimeConverted), "minutes");
     console.log("DIFFERENCE IN TIME: " + timeDiff);
@@ -72,18 +73,25 @@ database.ref().on("child_added", function (snap) {
     console.log(timeRemain);
 
     var tMinutesTillTrain = trainFreq - timeRemain;
-    console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+
 
     var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+    var newTDNextTrain = $("<td>").text(nextTrain);
+    newTableRow.append(newTDNextTrain);
     console.log("ARRIVAL TIME: " + moment(nextTrain).format("HH:mm"));
 
+    var newTDMinutes = $("<td>").text(tMinutesTillTrain);
+    newTableRow.append(newTDMinutes);
+
+   
+        //Going to play around with If statement, so only certain things can be entered in text fields.
     // if (timeInput !== format("HH:mm")){
     //     alert("Current field needs to be entered in Military Time!")
+    // } else if (freqInput === NaN) {
+    //     alert("Enter a Number")
     // }
-
-
-
 });
+
 
 
 
