@@ -14,6 +14,7 @@ firebase.initializeApp(firebaseConfig);
 
 var database = firebase.database();
 
+//On click function that is is grabbing info from our input fields and saving that information to firebase with ref.push
 $("#submit").on("click", function () {
 
     var trainInput = $("#trainNameInput").val().trim();
@@ -29,12 +30,12 @@ $("#submit").on("click", function () {
         freqInput: freqInput,
 
     });
-
-
 });
 
+//on child added used for when we get the info back from firebase
 database.ref().on("child_added", function (snap) {
 
+    //setting a variable for the value of our snap
     var sval = snap.val();
 
     console.log(snap.val());
@@ -44,62 +45,67 @@ database.ref().on("child_added", function (snap) {
     console.log(snap.val().freqInput);
     console.log("--------------");
 
+    //table row appending the initial data that will be displayed from user input
     var newTableRow = $("<tr>").append(
 
         $("<td>").text(sval.trainInput),
         $("<td>").text(sval.destInput),
         $("<td>").text(sval.freqInput),
-
     );
 
-
+    //appending that row to the tbody that we left blank in html table
     $("tbody").append(newTableRow);
 
+    //variable for user input train frequency
     var trainFreq = sval.freqInput;
 
+    //the user input of first train time 
     var firstTrainTime = sval.timeInput;
 
+    //converting first train time into military hours
     var firstTimeConverted = moment(firstTrainTime, "HH:mm").subtract(1, "years");
     console.log(firstTimeConverted);
 
+    //converting current time to military hours and setting it to a variable
     var currentTime = moment().format("HH:mm");
     console.log("CURRENT TIME: " + moment(currentTime).format("HH:mm"));
 
+    //getting the time difference 
     var timeDiff = moment().diff(moment(firstTimeConverted), "minutes");
 
-
+    //varibale setting the remainder between user input of frequency and first time and current time
     var timeRemain = timeDiff % trainFreq;
 
+    //setting a variable that is getting the difference between time remaining and frequency
+    var minutesTillTrain = trainFreq - timeRemain;
 
-    var tMinutesTillTrain = trainFreq - timeRemain;
-
-
-    var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-    $("<td>").text(moment(nextTrain).format("HH:mm"));
+    //variable for the next train 
+    var nextTrain = moment().add(minutesTillTrain, "minutes");
+    //next train being saved into table data and append to new row
     var newTDNextTrain = $("<td>").text(moment(nextTrain).format("HH:mm"));
     newTableRow.append(newTDNextTrain);
 
-
-    var newTDMinutes = $("<td>").text(tMinutesTillTrain);
+    //how many minutes until the next train arrives
+    var newTDMinutes = $("<td>").text(minutesTillTrain);
     newTableRow.append(newTDMinutes);
-
+    //adding centered text to row elements
     newTableRow.addClass("text-center");
 
+    //starting to set button to remove rows
     var removeTrain = $("<button>");
 
-      removeTrain.attr("data-to-do", newTableRow);
-      removeTrain.addClass("checkbox");
-      removeTrain.text("x");
+    removeTrain.attr("data-to-do", newTableRow);
+    removeTrain.addClass("checkbox");
+    removeTrain.text("x");
 
-      // Append the button to the to do item
-      newTableRow = newTableRow.append(removeTrain);
+    // Append the button
+    newTableRow = newTableRow.append(removeTrain);
 
-      $(document.body).on("click", ".checkbox", function() {
+    $(document.body).on("click", ".checkbox", function () {
         var removeRow = $(this).attr("data-to-do");
         $(newTableRow).remove();
 
-      });
-
+    });
 
     //Going to play around with If statement, so only certain things can be entered in text fields.
     // if (timeInput !== format("HH:mm")){
@@ -107,6 +113,7 @@ database.ref().on("child_added", function (snap) {
     // } else if (freqInput === NaN) {
     //     alert("Enter a Number")
     // }
+    
 });
 
 
