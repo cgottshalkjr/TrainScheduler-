@@ -21,18 +21,13 @@ $("#submit").on("click", function () {
     var timeInput = $("#trainTimeInput").val().trim();
     var freqInput = $("#frequencyInput").val().trim();
 
-
-    console.log(trainInput);
-    console.log(destInput);
-    console.log(timeInput);
-    console.log(freqInput);
-
     database.ref().push({
 
         trainInput: trainInput,
         destInput: destInput,
         timeInput: timeInput,
         freqInput: freqInput,
+
     });
 
 
@@ -50,47 +45,70 @@ database.ref().on("child_added", function (snap) {
     console.log("--------------");
 
     var newTableRow = $("<tr>").append(
+
         $("<td>").text(sval.trainInput),
         $("<td>").text(sval.destInput),
         $("<td>").text(sval.freqInput),
+
     );
+
 
     $("tbody").append(newTableRow);
 
     var trainFreq = sval.freqInput;
 
     var firstTrainTime = sval.timeInput;
-    
+
     var firstTimeConverted = moment(firstTrainTime, "HH:mm").subtract(1, "years");
     console.log(firstTimeConverted);
-    
+
     var currentTime = moment().format("HH:mm");
+    console.log("CURRENT TIME: " + moment(currentTime).format("HH:mm"));
 
     var timeDiff = moment().diff(moment(firstTimeConverted), "minutes");
-    console.log("DIFFERENCE IN TIME: " + timeDiff);
+
 
     var timeRemain = timeDiff % trainFreq;
-    console.log(timeRemain);
+
 
     var tMinutesTillTrain = trainFreq - timeRemain;
 
 
     var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-    var newTDNextTrain = $("<td>").text(nextTrain);
+    $("<td>").text(moment(nextTrain).format("HH:mm"));
+    var newTDNextTrain = $("<td>").text(moment(nextTrain).format("HH:mm"));
     newTableRow.append(newTDNextTrain);
-    console.log("ARRIVAL TIME: " + moment(nextTrain).format("HH:mm"));
+
 
     var newTDMinutes = $("<td>").text(tMinutesTillTrain);
     newTableRow.append(newTDMinutes);
 
-   
-        //Going to play around with If statement, so only certain things can be entered in text fields.
+    newTableRow.addClass("text-center");
+
+    var removeTrain = $("<button>");
+
+      removeTrain.attr("data-to-do", newTableRow);
+      removeTrain.addClass("checkbox");
+      removeTrain.text("x");
+
+      // Append the button to the to do item
+      newTableRow = newTableRow.append(removeTrain);
+
+      $(document.body).on("click", ".checkbox", function() {
+        var removeRow = $(this).attr("data-to-do");
+        $(newTableRow).remove();
+
+      });
+
+
+    //Going to play around with If statement, so only certain things can be entered in text fields.
     // if (timeInput !== format("HH:mm")){
     //     alert("Current field needs to be entered in Military Time!")
     // } else if (freqInput === NaN) {
     //     alert("Enter a Number")
     // }
 });
+
 
 
 
