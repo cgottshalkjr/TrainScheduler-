@@ -94,18 +94,16 @@ database.ref().on("child_added", function (snap) {
     //starting to set button to remove rows
     var removeTrain = $("<button>");
 
-    removeTrain.attr("data-to-do", newTableRow);
-    removeTrain.addClass("checkbox");
+    removeTrain.attr("data-id", snap.key);
+    removeTrain.addClass("checkbox btn-dark mt-2");
     removeTrain.text("x");
 
     // Append the button
-    newTableRow = newTableRow.append(removeTrain);
+    $("<td>").append(removeTrain);
+    newTableRow = newTableRow.prepend(removeTrain);
+    
 
-    $(document.body).on("click", ".checkbox", function () {
-        var removeRow = $(this).attr("data-to-do");
-        $(newTableRow).remove();
-
-    });
+    
 
     //Going to play around with If statement, so only certain things can be entered in text fields.
     // if (timeInput !== format("HH:mm")){
@@ -115,6 +113,15 @@ database.ref().on("child_added", function (snap) {
     // }
     
 });
+
+$(document.body).on("click", ".checkbox", function () {
+    var key = $(this).attr("data-id");
+    database.ref().child(key).remove();
+   location.reload();
+
+});
+
+
 
 
 
