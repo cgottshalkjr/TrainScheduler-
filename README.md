@@ -6,3 +6,4 @@ The information will be backed up into a firebase database so it can be stored a
 I also added checkboxes to delete a train if a user wants to get rid of the text without going to Firebase. This is app is mobile responsive and the header changes and table also becomes responsive.
 If I have more time in the future I will come back and add a feature which allows a user to update info. And maybe add some user authentication.
 
+https://cgottshalkjr.github.io/TrainScheduler-/
